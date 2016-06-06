@@ -8,16 +8,21 @@ object Increment extends App {
 
     def reverseInc(number: Seq[Int]): Seq[Int] = number match {
       case Nil => Nil
-      case x :: xs => (x + 1) :: xs
+      case x :: Nil if x == 9 => Seq(0,1)
+      case x :: xs if x == 9 => 0 +: reverseInc(xs)
+      case x :: xs => x + 1 :: xs
     }
 
     reverseInc(number.reverse).reverse
   }
 
-
-  assert(inc(Nil) == Nil, "Failed to increment empty list")
-  assert(inc(Seq(0)) == Seq(1), "Failed to increment one digit")
-  assert(inc(Seq(8)) == Seq(9), "Failed to increment one digit")
-  assert(inc(Seq(1,2)) == Seq(1,3), "Failed to increment two digit number")
-  assert(inc(Seq(1,2,3)) == Seq(1,2,4), "Failed to increment three digit number")
+  assert(inc(Nil) == Nil, s"inc(Nil) ${inc(Nil)}")
+  assert(inc(Seq(0)) == Seq(1), s"inc(Seq(0)): ${inc(Seq(0))}")
+  assert(inc(Seq(1,2)) == Seq(1,3), s"inc(Seq(1,2)): ${inc(Seq(1,2))}")
+  assert(inc(Seq(1,9)) == Seq(2,0), s"inc(Seq(1,9)): ${inc(Seq(1,9))}")
+  assert(inc(Seq(1,2,3)) == Seq(1,2,4), s"Seq(1,2,3)): ${Seq(1,2,3)}")
+  assert(inc(Seq(9)) == Seq(1,0), s"inc(Seq(9)): ${inc(Seq(9))}")
+  assert(inc(Seq(9,9)) == Seq(1,0,0), s"inc(Seq(9,9)): ${inc(Seq(9,9))}")
+  assert(inc(Seq(1,9,9)) == Seq(2,0,0), s"inc(Seq(1,9,9)): ${inc(Seq(1,9,9))}")
+  assert(inc(Seq(9,9,9)) == Seq(1,0,0,0), s"inc(Seq(9,9,9)): ${inc(Seq(9,9,9))}")
 }
