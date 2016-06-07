@@ -12,7 +12,7 @@ trait Futures {
   }
 
   def f2 = Future {
-    Thread.sleep(100)
+    Thread.sleep(50)
     println(s"Future 2")
   }
 
@@ -54,12 +54,10 @@ object ChainedFutures extends Futures {
 object DependentFutures extends Futures {
   def main(args: Array[String]): Unit = {
 
-    //TODO FIXIT
-    val dep1 = f1.flatMap { _ => f2;f3}
-
     for {
-      r1 <- dep1
-      r1 <- f4
+      r1 <- f1
+      r2 <- Future.sequence(Seq(f2,f3))
+      r3 <- f4
     } yield println("finished dependent futures")
 
     Thread.sleep(500)
