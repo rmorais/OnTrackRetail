@@ -1,14 +1,19 @@
 The most common way of versioning an API is to specify to the api version on the url.
 
-curl https://api.ontrackretail.com/v2/addressbook/contacts -I
+curl https://api.ontrackretail.com/v2/addressbook/contacts
 
-Other way is to specify the version on a HTTP Header. We should use a standard HTTP header for this and not a custom header as it might be filter by proxies or cdn.
-Normally, the accept header is the one used for this purpose.
+Other way is to specify the version on a HTTP Header. We could use a standard HTTP header for this and not a custom header as it might be filtered by some proxies or cdn.
+The "norm", is to use the accept header for this purpose.
 
-curl https://api.ontrackretail.com/addressbook/contacts -I \
- -H "Accept: application/vnd.ontrackretail.v2"
+curl https://api.ontrackretail.com/addressbook/contacts \
+ -H "Accept: application/vnd.ontrackretail.v2.json"
 
- With the version in the url, it is easir to test the different versions as we just need to change the version on the url.
- This might be confusing as the url should be semantically meaningfull. With the version on the url are we requesting a
- different version of the same resource? ie, do we have in our domain two versions of the same resource?
+ With the version in the url, it is easier to test the different versions as we just need to change the version on the url.
+ This might be confusing as the url should be semantically meaningful. The url should represent the resource. With the version on the url are we requesting
+ the same resource but with a different meaning? Or we just have different representations of the same resource?
+ We can use versioning in the url if we are changing the meaning of the resource.
+
+ Using an HTTP header makes it harder to test, as every time we need to construct the request and configure the header.
+But the url will be stable and will have a single location for the resource
+
 
