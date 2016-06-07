@@ -1,0 +1,85 @@
+An address book is a collection of contacts.
+A contact can have several details, like name, phone number and address.
+We can further detail this concepts and break them down in smaller parts.
+Like a name can contain First Name, Surname, middle name, salutation, etc...
+An address might be split into door number, flat number, street name, city, country, postal code, etc...
+
+A rest api to interact with the address book might look like this
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Fetch all the contacts inside the address book
+GET /addressbook/contacts
+
+curl https://api.ontrackretail.com/addressbook/contacts
+
+In case of success, it should return a 200 with the contacts of the address book
+HTTP/1.1 200 Ok
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Fetch a specific contact from the address book
+GET /addressbook/contacts/id
+
+curl https://api.ontrackretail.com/addressbook/contacts/id
+
+In case of success, it should return a 200 with the data the specified contact
+HTTP/1.1 200 Ok
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Create a new contact (if we don't know the know the location of the new resource)
+We would need to pass the contact details to create inside the body of the request, as a json for example
+POST /addressbook/contacts
+
+curl https://api.ontrackretail.com/addressbook/contacts \
+-d name="Full Name of client"
+-d phone_number="0208456789"
+
+In case of success, it should return a 201 with the location of the new resource
+HTTP/1.1 201 Created
+Location: /addressbook/contacts/4252345
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Update(/Create)
+This should be used to provide a new full representation of the resource. Fields that are not specified, should be removed.
+PUT /addressbook/contacts/id
+
+curl -X PUT https://api.ontrackretail.com/addressbook/contacts/3453 \
+            -d name="Full Name of client"
+            -d phone_number="0208456789"
+
+In case of success, it should return a 201 in case the resource didn't exist or should return a 200 in case the resource exists
+HTTP/1.1 201 Created
+or
+HTTP/1.1 200 Ok
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Update
+To do partial updates, we can use the PATCH method and specify only the fields we want to update
+PATCH /addressbook/contacts/id
+
+curl -X PATCH https://api.ontrackretail.com/addressbook/contacts/3453 \
+            -d name="Full Name of client"
+            -d phone_number="0208456789"
+
+In case of success, should return a 200
+HTTP/1.1 200 Ok
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Delete a contact from the address book
+DELETE /addressbook/contacts/id
+
+curl https://api.ontrackretail.com/addressbook/contacts/id \
+-X DELETE
+
+In case of success, should return a 204, if no data is being returned or 200 if some data is being returned
+HTTP/1.1 204 No Content
+or
+HTTP/1.1 200 Ok
+----------------------------------------------------------------------------------------------------------------------------------------
+
+
+For error handling we should try to map errors into standard http codes.
+
+In general, codes in the 2xx range indicate success, codes in the 4xx range indicate an error that failed given the
+information provided (e.g., a required parameter was omitted, a charge failed, etc.), and codes in the 5xx range
+indicate an error with the servers.
